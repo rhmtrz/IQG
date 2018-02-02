@@ -10,7 +10,7 @@ class Button extends Component {
   }
 
   onChange(event) {
-    const inputNumber = /^[1-9]+$/;
+    const inputNumber = /[1-9]/;
     if (event.target.value == "" || inputNumber.test(event.target.value)) {
       this.setState({value: event.target.value})
     }
