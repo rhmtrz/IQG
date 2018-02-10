@@ -19,7 +19,9 @@ class Button extends Component {
 
     return (
       <form>
-        <input value={this.state.value} onChange={this.onChange} maxLength="1" />
+        <div>
+          <input value={this.state.value} onChange={this.onChange} maxLength="1" />
+        </div>
       </form>
     );
   }
