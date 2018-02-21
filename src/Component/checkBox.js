@@ -7,7 +7,8 @@ export default class CheckBox extends Component {
       checked: true
     };
     this.handleChecked = this.handleChecked.bind(this);
-}
+  }
+
   handleChecked() {
     this.setState({checked: !this.state.checked})
   }
