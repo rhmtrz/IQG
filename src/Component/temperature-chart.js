@@ -1,15 +1,24 @@
 import React, { Component } from 'react';
-import { XYPlot, LineSeries, VerticalBarSeries, MarkSeries } from 'react-vis';
+import {
+  XYPlot,
+  HorizontalGridLines,
+  VerticalGridLines,
+  DiscreteColorLegend,
+  XAxis,YAxis,
+  LineMarkSeries } from 'react-vis';
 
 class Chart extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        data: [
-          {x: 0, y: 8},
-          {x: 1, y: 5},
-        ]
+        data: [["Jan",2.3],
+          ["Feb",10],
+          ["Mar",20],
+          ["Apr",30],
+          ["May",40],
+          ["Jun",35]]
       }
+
       let i =0;
       window.addEventListener("mousemove",({clientX, clientY}) => {
         this.setState({
@@ -21,21 +30,32 @@ class Chart extends Component {
          i++;
       })
     }
+
+  const series = [1].map(i =>
+    data.map(d => ({x: d[0], y: d[i]})
+    ));
+
+  const axisProps = {
+    tickSizeInner: 0,
+    style: {line: {stroke: '#939393', strokeWidth: '1px'}}
+  };
+
   render() {
     const { data } = this.state;
-    return (
-      <div className="App">
-      <XYPlot height={800} width={1800}>
-        <VerticalBarSeries data={data} />
-      </XYPlot>
-      <XYPlot height={200} width={200}>
-        <LineSeries data={data} />
-      </XYPlot>
-      <XYPlot height={200} width={200}>
-        <MarkSeries data={data} />
-      </XYPlot>
-      </div>
-    );
+    console.log(data);
+
+    return (<div>
+      <h2 className='tk-adobe-caslon-pro'>Temperature</h2>
+      <DiscreteColorLegend items={['°C Kabul', '°C Tokyo']} orientation='horizontal'/>
+      <XYPlot width={700} height={300}
+           yDomain={[-50, 50]}>
+          <VerticalGridLines />
+          <HorizontalGridLines />
+          <XAxis {...axisProps} tickFormat={String} />
+          <YAxis {...axisProps} tickFormat={(d) => d + '°C'}/>
+
+          {series.map((d, i) => <LineMarkSeries key={i} size={3} data={d} />)}
+    </XYPlot></div>);
   }
 }
 
