@@ -20,29 +20,28 @@ class Chart extends Component {
       }
 
       let i =0;
-      window.addEventListener("mousemove",({clientX, clientY}) => {
+      window.addEventListener("onclick", ({clientX, clientY}) => {
         this.setState({
-          data: this.state.data.concat({
-            x: i ,
-             y : clientY % 10
-           })
+          data: this.state.data.map(i =>
+            data.map(d => ({x: d[0], y: d[i]})
+            ))
          })
          i++;
       })
     }
 
-  const series = [1].map(i =>
-    data.map(d => ({x: d[0], y: d[i]})
-    ));
 
-  const axisProps = {
-    tickSizeInner: 0,
-    style: {line: {stroke: '#939393', strokeWidth: '1px'}}
-  };
+//  const series = [1].map(i =>
+//    data.map(d => ({x: d[0], y: d[i]})
+//    ));
+
 
   render() {
     const { data } = this.state;
-    console.log(data);
+    const axisProps = {
+      tickSizeInner: 0,
+      style: {line: {stroke: '#939393', strokeWidth: '1px'}}
+    };
 
     return (<div>
       <h2 className='tk-adobe-caslon-pro'>Temperature</h2>
