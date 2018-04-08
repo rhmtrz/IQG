@@ -4,7 +4,7 @@ export default class CheckBox extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      checked: true
+      checked: false
     };
     this.handleChecked = this.handleChecked.bind(this);
   }

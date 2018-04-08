@@ -4,12 +4,12 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import CheckBox from './Component/checkBox.js';
-import Chart from './Component/temperature-chart.js';
+import Counter from './Component/Counter.js'
 
 ReactDOM.render(<div>
     <App />
     <CheckBox />
-    <Chart />
+    <Counter />
   </div>,
   document.getElementById('root'));
 registerServiceWorker();
