@@ -5,11 +5,14 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import CheckBox from './Component/checkBox.js';
 import Counter from './Component/Counter.js'
+import Calculator from './Component/Calculator.js'
 
-ReactDOM.render(<div>
+ReactDOM.render(
+  <div>
     <App />
     <CheckBox />
     <Counter />
+    <Calculator />
   </div>,
   document.getElementById('root'));
 registerServiceWorker();
