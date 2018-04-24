@@ -14,13 +14,20 @@ export default class Calculator extends React.Component {
     super();
 
     this.state = {
-      expression: '0',
+      expression: '0'
     };
 
     this.onKeyPressed = (text) => {
-      this.setState((prev) => ({
-        expression: prev.expression + text,
-      }));
+      this.setState((prev) => {
+        let prevExpression = prev.expression;
+        if (prevExpression[prevExpression.length - 1] === '0') {
+          prevExpression = prevExpression.slice(0, -1);
+        }
+
+        return {
+          expression: prevExpression + text,
+        };
+      });
     };
 
 /*
