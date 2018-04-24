@@ -1,78 +1,78 @@
 import React from 'react';
-import Key from './ButtonCalculator';
-
-const DisplayWindow = ({expression}) => {
-  console.log('---expression---');
-  console.log(expression);
-  return (
-    <input type='text' value={expression} disabled={true}/>
-  );
-}
 
 export default class Calculator extends React.Component {
-  constructor() {
-    super();
+  state = {
+    displayValue: '0',
+    waitingForOperand: false,
+    operator: null
+  }
 
-    this.state = {
-      expression: '0',
-    };
+  inputDigit = (digit) => {
+    const { displayValue } = this.state
 
-    this.onKeyPressed = (text) => {
-      this.setState((prev) => ({
-        expression: prev.expression + text,
-      }));
-    };
+    this.setState({
+      displayValue: displayValue === '0' ? String(digit) : displayValue + digit
+    })
+  }
 
-/*
-   this.onDeletePressed = () => {
-      this.setState(
-        (prev) => ({
-          if (prev.expression.length <= 1) {
-            expression: 0
-          } else {
-            expression: prev.expression.slice(0, -1)
-          }
-        })
-      )
-    } */
+  inputDot = () => {
+    const {displayValue } = this.state
+    if (displayValue.indexOf('.') === -1) {
+      this.setState({
+        displayValue: displayValue + '.'
+      });
+    }
+  };
 
-    this.onDeletePressed = () => {
-      this.setState(
-        (prev) => ({
-          expression: prev.expression.length <= 1 ? '0' : prev.expression.slice(0, -1),
-        })
-      );
-    };
+  clearDisplay = () => {
+    const { displayValue } = this.state
 
-    this.onEvaluatePressed = () => {
-      const result = eval(this.state.expression);
-      this.setState((prev) => ({
-        expression: result.toString(),
-      }));
-    };
+    this.setState({
+      displayValue: '0'
+    })
+  }
+
+  inputPercent = () => {
+    const {displayValue } = this.state
+    const value = parseFloat(displayValue)
+
+    this.setState({
+      displayValue: String(value / 100)
+    })
+  }
+
+  performOperation = (operator) => {
+    this.setState({
+      waitingForOperand: true,
+      operator: operator
+    })
   }
 
   render() {
-    const { expression } = this.state;
+    const { displayValue } = this.state;
     return (
       <div>
-        <DisplayWindow expression={expression}/>
-        <Key text='0' onKeyPressed={this.onKeyPressed}/>
-        <Key text='1' onKeyPressed={this.onKeyPressed}/>
-        <Key text='2' onKeyPressed={this.onKeyPressed}/>
-        <Key text='3' onKeyPressed={this.onKeyPressed}/>
-        <Key text='4' onKeyPressed={this.onKeyPressed}/>
-        <Key text='5' onKeyPressed={this.onKeyPressed}/>
-        <Key text='6' onKeyPressed={this.onKeyPressed}/>
-        <Key text='7' onKeyPressed={this.onKeyPressed}/>
-        <Key text='8' onKeyPressed={this.onKeyPressed}/>
-        <Key text='9' onKeyPressed={this.onKeyPressed}/>
-        <Key text='+' onKeyPressed={this.onKeyPressed}/>
-        <Key text='-' onKeyPressed={this.onKeyPressed}/>
-        <Key text='*' onKeyPressed={this.onKeyPressed}/>
-        <Key text='/' onKeyPressed={this.onKeyPressed}/>
-        <button onClick={this.onDeletePressed}>C</button>
-        <button onClick={this.onEvaluatePressed}>=</button>
+        <div>{displayValue}
+          <pre>{JSON.stringify(this.state, null, 2)}</pre>
+        </div>
+        <button onClick={() => this.inputDigit(0)}>0</button>
+        <button onClick={() => this.inputDot()}>.</button>
+        <button onClick={() => this.inputDigit(1)}>1</button>
+        <button onClick={() => this.inputDigit(2)}>2</button>
+        <button onClick={() => this.inputDigit(3)}>3</button>
+        <button onClick={() => this.inputDigit(4)}>4</button>
+        <button onClick={() => this.inputDigit(5)}>5</button>
+        <button onClick={() => this.inputDigit(6)}>6</button>
+        <button onClick={() => this.inputDigit(7)}>7</button>
+        <button onClick={() => this.inputDigit(8)}>8</button>
+        <button onClick={() => this.inputDigit(9)}>9</button>
+        <button onClick={() => this.performOperation('+')}>+</button>
+        <button onClick={() => this.performOperation('-')}>-</button>
+        <button onClick={() => this.performOperation('*')}>*</button>
+        <button onClick={() => this.performOperation('/')}>/</button>
+        <button onClick={() => this.performOperation('=')}>=</button>
+        <button onClick={() => this.clearDisplay()}>AC</button>
+        <button onClick={() => this.inputPercent()}>%</button>
       </div>
     )
   }
