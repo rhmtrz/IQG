@@ -4,22 +4,36 @@ export default class Calculator extends React.Component {
   state = {
     displayValue: '0',
     waitingForOperand: false,
-    operator: null
+    operator: null,
+    value: null
   }
 
   inputDigit = (digit) => {
-    const { displayValue } = this.state
+    const { displayValue, waitingForOperand } = this.state
 
-    this.setState({
-      displayValue: displayValue === '0' ? String(digit) : displayValue + digit
-    })
+    if (waitingForOperand) {
+        this.setState({
+          displayValue: String(digit),
+          waitingForOperand: false
+        })
+      } else {
+      this.setState({
+        displayValue: displayValue === '0' ? String(digit) : displayValue + digit
+      })
+    }
   }
 
   inputDot = () => {
-    const {displayValue } = this.state
-    if (displayValue.indexOf('.') === -1) {
+    const { displayValue, waitingForOperand } = this.state
+
+    if (waitingForOperand === true) {
       this.setState({
-        displayValue: displayValue + '.'
+        displayValue: '.',
+        waitingForOperand: false,
+      });
+    } else if (displayValue.indexOf('.') === -1) {
+      this.setState({
+        displayValue: displayValue + '.',
       });
     }
   };
@@ -28,7 +42,10 @@ export default class Calculator extends React.Component {
     const { displayValue } = this.state
 
     this.setState({
-      displayValue: '0'
+      displayValue: '0',
+      waitingForOperand: false,
+      operator: null,
+      value: null
     })
   }
 
@@ -41,10 +58,40 @@ export default class Calculator extends React.Component {
     })
   }
 
-  performOperation = (operator) => {
+  performOperation = (nextOperator) => {
+    const {displayValue, operator, value } = this.state
+    const nextValue = parseFloat(displayValue)
+    console.log('.....nextValue.....');
+    console.log(nextValue);
+    console.log(nextOperator)
+
+    const operations = {
+      '/': (prevValue, nextValue) => prevValue / nextValue,
+      '*': (prevValue, nextValue) => prevValue * nextValue,
+      '-': (prevValue, nextValue) => prevValue - nextValue,
+      '+': (prevValue, nextValue) => prevValue + nextValue,
+      '=': (prevValue, nextValue) => nextValue
+    }
+
+    if (value == null) {
+      this.setState({
+        value: nextValue
+      })
+    } else if (operator) {
+      const currentValue = value || 0
+      const computedValue = operations[operator](currentValue, nextValue)
+        console.log('..... computedValue ....');
+        console.log(computedValue);
+
+      this.setState({
+        value: computedValue,
+        displayValue: String(computedValue)
+      })
+    }
+
     this.setState({
       waitingForOperand: true,
-      operator: operator
+      operator: nextOperator
     })
   }
 
